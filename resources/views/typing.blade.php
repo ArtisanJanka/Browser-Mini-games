@@ -4,38 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Typing Game</title>
+    @vite(['resources/css/app.css', 'resources/js/app.js']) {{-- Tailwind via Laravel Vite --}}
     <style>
-        body {
-            font-family: 'Courier New', monospace;
-            background: #1e1e2f;
-            color: #f8f8f2;
-            padding: 2rem;
-            line-height: 1.6;
-        }
-
-        #display-text {
-            font-size: 1.2rem;
-            background: #2d2d44;
-            padding: 1rem;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(255,255,255,0.1);
-            margin-bottom: 1rem;
-            min-height: 120px;
-        }
-
         #display-text span {
             white-space: pre-wrap;
-        }
-
-        /* Visually hide input */
-        #input-box {
-            position: absolute;
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        #wpm, #timer, #accuracy, #errors {
-            margin: 0.25rem 0;
         }
 
         .highlight {
@@ -47,66 +19,79 @@
             0%, 100% { background-color: yellow; }
             50% { background-color: transparent; }
         }
-
-        #result-modal {
-            display: none;
-            background: #282846;
-            color: white;
-            border: 2px solid #8be9fd;
-            padding: 2rem;
-            border-radius: 10px;
-            text-align: center;
-            position: fixed;
-            top: 30%;
-            left: 50%;
-            transform: translate(-50%, -30%);
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
-            z-index: 10;
-        }
-
-        button {
-            padding: 0.5rem 1rem;
-            border: none;
-            border-radius: 5px;
-            background-color: #50fa7b;
-            color: #282a36;
-            cursor: pointer;
-            margin-top: 1rem;
-        }
     </style>
 </head>
-<body>
-    <div id="display-text">{{ $text->content }}</div>
-    <input id="input-box" type="text" autofocus>
-    <div id="wpm">WPM: 0</div>
-    <div id="accuracy">Accuracy: 100%</div>
-    <div id="errors">Errors: 0</div>
-    <div id="timer">Time: 00:00:000</div>
+<body class="bg-[#1e1e2f] text-[#f8f8f2] font-mono p-8 leading-relaxed">
 
-    <audio id="sound-correct" src="/sounds/correct.mp3" preload="auto"></audio>
-    <audio id="sound-error" src="/sounds/error.mp3" preload="auto"></audio>
-
-    <form method="POST" action="{{ route('submit') }}">
-        @csrf
-        <input type="hidden" name="nickname" value="Player1">
-        <input type="hidden" name="difficulty" value="{{ $difficulty }}">
-        <input type="hidden" id="completion_time" name="completion_time">
-        <button type="submit" id="submit-btn" style="display: none;">Submit</button>
-    </form>
-
-    <div id="result-modal">
-        <h2>Finished!</h2>
-        <p id="final-wpm"></p>
-        <p id="final-accuracy"></p>
-        <p id="final-time"></p>
-        <p id="final-badge" style="margin-top: 1rem; font-weight: bold; font-size: 1.2rem;"></p>
-        <button onclick="location.reload()">Play Again</button>
+    <div id="display-text" class="text-lg bg-[#2d2d44] p-4 rounded-xl shadow mb-6 min-h-[120px]">
+        {{ $text->content }}
     </div>
+
+    <input 
+        id="input-box" 
+        type="text" 
+        name="hidden-typing-field"
+        class="absolute opacity-0 pointer-events-none"
+        autocomplete="new-password" 
+        autocorrect="off" 
+        autocapitalize="off" 
+        spellcheck="false" 
+        onpaste="return false;" 
+        oncontextmenu="return false;" 
+        oncopy="return false;" 
+        oncut="return false;" 
+        ondragstart="return false;" 
+        ondrop="return false;"
+    >
+
+    <div id="wpm" class="mb-1">WPM: 0</div>
+    <div id="accuracy" class="mb-1">Accuracy: 100%</div>
+    <div id="errors" class="mb-1">Errors: 0</div>
+    <div id="timer" class="mb-4">Time: 00:00:000</div>
+
+    <audio id="sound-correct" src="https://assets.mixkit.co/sfx/download/mixkit-positive-interface-beep-221.mp3" preload="auto"></audio>
+    <audio id="sound-error" src="https://assets.mixkit.co/sfx/download/mixkit-wrong-answer-buzz-950.mp3" preload="auto"></audio>
+
+    <div id="result-modal" class="hidden fixed top-[30%] left-1/2 transform -translate-x-1/2 -translate-y-[30%] bg-[#282846] text-white border-2 border-cyan-300 p-8 rounded-xl shadow-2xl z-50 text-center w-full max-w-md">
+    <h2 class="text-xl font-bold">Finished!</h2>
+    <p id="final-wpm" class="mt-2"></p>
+    <p id="final-accuracy"></p>
+    <p id="final-time"></p>
+    <p id="final-badge" class="mt-4 font-semibold text-lg"></p>
+
+    <div class="mt-6 flex flex-wrap justify-center gap-4">
+        <!-- Play Again -->
+        <button 
+            onclick="location.reload()" 
+            class="bg-green-400 text-black px-4 py-2 rounded hover:bg-green-300 transition"
+        >
+            Play Again
+        </button>
+
+        <!-- Submit Score -->
+        <form method="POST" action="{{ route('submit') }}">
+            @csrf
+            <input type="hidden" name="nickname" value="Player1">
+            <input type="hidden" name="difficulty" value="{{ $difficulty }}">
+            <input type="hidden" id="completion_time" name="completion_time">
+            <button 
+                type="submit" 
+                id="submit-btn" 
+                class="bg-blue-400 text-black px-4 py-2 rounded hover:bg-blue-300 transition hidden"
+            >
+                Submit Score
+            </button>
+        </form>
+    </div>
+</div>
+
+
+
 
     <script>
         let startTime, timerInterval, started = false;
         let errorCount = 0;
-        let errorTracker = {}; // Track index-based errors only once
+        let errorTracker = {};
 
         const inputBox = document.getElementById('input-box');
         const originalText = document.getElementById('display-text').innerText;
@@ -115,6 +100,17 @@
 
         window.onload = () => inputBox.focus();
         document.body.addEventListener('click', () => inputBox.focus());
+
+        inputBox.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && ['v', 'c', 'x', 'a'].includes(e.key.toLowerCase())) {
+                e.preventDefault();
+            }
+
+            if (e.key === 'Backspace') {
+                const index = inputBox.value.length;
+                delete errorTracker[index]; // Let user retry that spot
+            }
+        });
 
         inputBox.addEventListener('input', () => {
             const typed = inputBox.value;
@@ -144,10 +140,9 @@
                         ? `<span class="highlight">${origChar}</span>`
                         : `<span>${origChar}</span>`;
                 } else if (typedChar === origChar) {
-                    resultHTML += `<span style="color: green;">${origChar}</span>`;
+                    resultHTML += `<span class="text-green-400">${origChar}</span>`;
                 } else {
-                    resultHTML += `<span style="color: red;">${origChar}</span>`;
-
+                    resultHTML += `<span class="text-red-400">${origChar}</span>`;
                     if (!errorTracker[i]) {
                         errorCount++;
                         errorTracker[i] = true;
@@ -184,7 +179,7 @@
             else badgeText = '🔥 Typing God';
 
             document.getElementById('final-badge').textContent = badgeText;
-            document.getElementById('result-modal').style.display = 'block';
+            document.getElementById('result-modal').classList.remove('hidden');
         }
 
         function formatTime(ms) {
@@ -210,6 +205,5 @@
             document.getElementById('errors').textContent = 'Errors: ' + errorCount;
         }
     </script>
-
 </body>
 </html>

@@ -13,8 +13,10 @@ return new class extends Migration
     {
         Schema::create('leaderboards', function (Blueprint $table) {
             $table->id();
-            $table->string('nickname');
+            $table->foreignId('user_id')->onCscadconstrained()->onDelete('cascade');
             $table->string('difficulty');
+            $table->integer('WPM');
+            $table->integer('accuracy');
             $table->integer('completion_time'); // in ms
             $table->timestamps();
         });

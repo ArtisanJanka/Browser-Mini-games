@@ -23,8 +23,7 @@
     let startTime, timerInterval;
     let started = false;
     const inputBox = document.getElementById('input-box');
-    const displayText = document.getElementById('display-text').innerText;
-    const displayWords = displayText.split(' ');
+    const originalText = document.getElementById('display-text').innerText;
 
     inputBox.addEventListener('input', () => {
         if (!started) {
@@ -33,19 +32,29 @@
             timerInterval = setInterval(() => {
                 const elapsed = Date.now() - startTime;
                 document.getElementById('timer').textContent = 'Time: ' + formatTime(elapsed);
+                updateWPM(elapsed);
             }, 100);
         }
 
-        const typedWords = inputBox.value.split(' ');
-        const wordSpans = displayWords.map((word, index) => {
-            if (typedWords[index] === undefined) return `<span>${word}</span>`;
-            if (typedWords[index] === word) return `<span style='color: green;'>${word}</span>`;
-            return `<span style='color: red;'>${word}</span>`;
-        });
+        const typed = inputBox.value;
+        let resultHTML = '';
 
-        document.getElementById('display-text').innerHTML = wordSpans.join(' ');
+        for (let i = 0; i < originalText.length; i++) {
+            const origChar = originalText[i];
+            const typedChar = typed[i];
 
-        if (typedWords.length >= displayWords.length) {
+            if (typedChar == null) {
+                resultHTML += `<span>${origChar}</span>`;
+            } else if (typedChar === origChar) {
+                resultHTML += `<span style="color: green;">${origChar}</span>`;
+            } else {
+                resultHTML += `<span style="color: red;">${origChar}</span>`;
+            }
+        }
+
+        document.getElementById('display-text').innerHTML = resultHTML;
+
+        if (typed.length >= originalText.length) {
             clearInterval(timerInterval);
             const timeTaken = Date.now() - startTime;
             document.getElementById('completion_time').value = timeTaken;
@@ -59,6 +68,14 @@
         const milliseconds = String(ms % 1000).padStart(3, '0');
         return `${minutes}:${seconds}:${milliseconds}`;
     }
+
+    function updateWPM(elapsedMs) {
+        const typed = inputBox.value;
+        const correctChars = [...typed].filter((char, i) => char === originalText[i]).length;
+        const wpm = Math.round((correctChars / 5) / (elapsedMs / 60000));
+        document.getElementById('wpm').textContent = 'WPM: ' + (isNaN(wpm) ? 0 : wpm);
+    }
 </script>
+
 </body>
 </html>

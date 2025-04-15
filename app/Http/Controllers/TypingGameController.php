@@ -16,6 +16,7 @@ class TypingGameController extends Controller
         $wordCount = match($difficulty) {
             'easy' => 50,
             'medium' => 100,
+            'hard' => 150,
             'hardcore' => 300,
             default => 50
         };

@@ -8,6 +8,7 @@
 <body>
     <a href="{{ route('play', 'easy') }}">Easy</a>
     <a href="{{ route('play', 'medium') }}">Medium</a>
+    <a href="{{ route('play', 'hard') }}">Hard</a>
     <a href="{{ route('play', 'hardcore') }}">Hardcore</a>
 </body>
 </html>

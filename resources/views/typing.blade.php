@@ -22,6 +22,12 @@
     </style>
 </head>
 <body class="bg-[#1e1e2f] text-[#f8f8f2] font-mono p-8 leading-relaxed">
+    <header class="flex justify-center gap-6 mb-6 text-lg font-semibold">
+        <a href="{{ route('play', 'easy') }}" class="text-green-300 hover:underline">Easy</a>
+        <a href="{{ route('play', 'medium') }}" class="text-yellow-300 hover:underline">Medium</a>
+        <a href="{{ route('play', 'hard') }}" class="text-orange-300 hover:underline">Hard</a>
+        <a href="{{ route('play', 'hardcore') }}" class="text-red-400 hover:underline">Hardcore</a>
+    </header>
 
     <div id="display-text" class="text-lg bg-[#2d2d44] p-4 rounded-xl shadow mb-6 min-h-[120px]">
         {{ $text->content }}

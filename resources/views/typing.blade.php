@@ -11,12 +11,12 @@
         }
 
         .highlight {
-            background-color: yellow;
+            background-color: green;
             animation: blink 1s infinite;
         }
 
         @keyframes blink {
-            0%, 100% { background-color: yellow; }
+            0%, 100% { background-color: green; }
             50% { background-color: transparent; }
         }
     </style>

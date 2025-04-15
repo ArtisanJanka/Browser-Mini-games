@@ -9,5 +9,5 @@ class Leaderboard extends Model
 {
     /** @use HasFactory<\Database\Factories\LeaderboardFactory> */
     use HasFactory;
-    protected $fillable = ['nickname', 'difficulty', 'compleation_time'];
+    protected $fillable = ['user_id', 'difficulty','WPM', 'accuracy', 'completion_time'];
 }

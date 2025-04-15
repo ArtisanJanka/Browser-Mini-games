@@ -32,17 +32,19 @@
         type="text" 
         name="hidden-typing-field"
         class="absolute opacity-0 pointer-events-none"
-        autocomplete="new-password" 
-        autocorrect="off" 
-        autocapitalize="off" 
-        spellcheck="false" 
+        autocomplete="off"
+        autocorrect="off"
+        autocapitalize="off"
+        spellcheck="false"
         onpaste="return false;" 
         oncontextmenu="return false;" 
         oncopy="return false;" 
         oncut="return false;" 
         ondragstart="return false;" 
         ondrop="return false;"
-    >
+        aria-hidden="true"
+    />
+
 
     <div id="wpm" class="mb-1">WPM: 0</div>
     <div id="accuracy" class="mb-1">Accuracy: 100%</div>
@@ -71,9 +73,11 @@
         <!-- Submit Score -->
         <form method="POST" action="{{ route('submit') }}">
             @csrf
-            <input type="hidden" name="nickname" value="Player1">
             <input type="hidden" name="difficulty" value="{{ $difficulty }}">
             <input type="hidden" id="completion_time" name="completion_time">
+            <input type="hidden" id="wpm_input" name="WPM">
+            <input type="hidden" id="accuracy_input" name="accuracy">
+            
             <button 
                 type="submit" 
                 id="submit-btn" 
@@ -162,16 +166,27 @@
             clearInterval(timerInterval);
             const timeTaken = Date.now() - startTime;
             document.getElementById('completion_time').value = timeTaken;
-            document.getElementById('submit-btn').style.display = 'block';
 
             const wpmText = document.getElementById('wpm').textContent;
             const accuracyText = document.getElementById('accuracy').textContent;
 
+            // Extract numbers
+            const wpmValue = parseInt(wpmText.replace(/\D/g, ''));
+            const accuracyValue = parseInt(accuracyText.replace(/\D/g, ''));
+
+            // 🧠 Populate form fields before submit
+            document.getElementById('wpm_input').value = wpmValue;
+            document.getElementById('accuracy_input').value = accuracyValue;
+
+            // Show the modal and submit button
+            document.getElementById('submit-btn').style.display = 'block';
+
+            // Display on modal
             document.getElementById('final-wpm').textContent = wpmText;
             document.getElementById('final-accuracy').textContent = accuracyText;
             document.getElementById('final-time').textContent = 'Time: ' + formatTime(timeTaken);
 
-            const wpmValue = parseInt(wpmText.replace(/\D/g, ''));
+            // Badge logic
             let badgeText = '';
             if (wpmValue < 30) badgeText = '🐢 Beginner';
             else if (wpmValue < 60) badgeText = '🐇 Intermediate';
@@ -181,6 +196,7 @@
             document.getElementById('final-badge').textContent = badgeText;
             document.getElementById('result-modal').classList.remove('hidden');
         }
+
 
         function formatTime(ms) {
             const minutes = String(Math.floor(ms / 60000)).padStart(2, '0');

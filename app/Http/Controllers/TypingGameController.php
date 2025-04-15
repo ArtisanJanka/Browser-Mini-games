@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\TextSample;
 use App\Models\Leaderboard;
+use Illuminate\Support\Facades\Auth;
 
 class TypingGameController extends Controller
 {
@@ -34,16 +35,23 @@ class TypingGameController extends Controller
     
     
 
-    public function submit(Request $request) {
+    public function submit(Request $request)
+    {
         $validated = $request->validate([
-            'nickname' => 'required|string|max:255',
             'difficulty' => 'required|string',
+            'WPM' => 'required|integer',
+            'accuracy' => 'required|integer',
             'completion_time' => 'required|integer',
         ]);
-
+    
+        // Add authenticated user_id
+        $validated['user_id'] = Auth::id();
+    
         Leaderboard::create($validated);
-        return redirect()->route('leaderboard');
+    
+        return back();
     }
+    
 
     public function leaderboard() {
         $scores = Leaderboard::orderBy('completion_time')->get()->groupBy('difficulty');

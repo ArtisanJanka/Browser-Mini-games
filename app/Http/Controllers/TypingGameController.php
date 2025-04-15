@@ -12,18 +12,27 @@ class TypingGameController extends Controller
         return view('gameselect');
     }
 
-    public function play($difficulty) {
-        $wordCount = match($difficulty) {
-            'easy' => 50,
-            'medium' => 100,
-            'hard' => 150,
-            'hardcore' => 300,
-            default => 50
-        };
-
-        $text = TextSample::inRandomOrder()->firstWhere('word_count', '>=', $wordCount);
+    public function play($difficulty)
+    {
+        // Define word count ranges for each difficulty
+        $ranges = [
+            'easy' => [40, 60],
+            'medium' => [80, 120],
+            'hard' => [130, 170],
+            'hardcore' => [250, 350],
+        ];
+    
+        // Default to easy if difficulty not recognized
+        [$min, $max] = $ranges[$difficulty] ?? [40, 60];
+    
+        $text = TextSample::whereBetween('word_count', [$min, $max])
+                    ->inRandomOrder()
+                    ->first();
+    
         return view('typing', compact('text', 'difficulty'));
     }
+    
+    
 
     public function submit(Request $request) {
         $validated = $request->validate([

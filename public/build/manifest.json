@@ -1,11 +1,19 @@
 {
   "resources/css/app.css": {
+<<<<<<< Updated upstream
     "file": "assets/app-DbTWgVAB.css",
+=======
+    "file": "assets/app-CBUFvYnw.css",
+>>>>>>> Stashed changes
     "src": "resources/css/app.css",
     "isEntry": true
   },
   "resources/js/app.js": {
+<<<<<<< Updated upstream
     "file": "assets/app-Bo-u61x1.js",
+=======
+    "file": "assets/app-eMHK6VFw.js",
+>>>>>>> Stashed changes
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true

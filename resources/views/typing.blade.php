@@ -1,32 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Typing Game</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js']) {{-- Tailwind via Laravel Vite --}}
-    <style>
-        #display-text span {
-            white-space: pre-wrap;
-        }
-
-        .highlight {
-            background-color: green;
-            animation: blink 1s infinite;
-        }
-
-        @keyframes blink {
-            0%, 100% { background-color: green; }
-            50% { background-color: transparent; }
-        }
-    </style>
-</head>
-<body class="bg-[#1e1e2f] text-[#f8f8f2] font-mono p-8 leading-relaxed">
-    <header class="flex justify-center gap-6 mb-6 text-lg font-semibold">
-        <a href="{{ route('play', 'easy') }}" class="text-green-300 hover:underline">Easy</a>
-        <a href="{{ route('play', 'medium') }}" class="text-yellow-300 hover:underline">Medium</a>
-        <a href="{{ route('play', 'hard') }}" class="text-orange-300 hover:underline">Hard</a>
-        <a href="{{ route('play', 'hardcore') }}" class="text-red-400 hover:underline">Hardcore</a>
+<x-app-layout>
+    <header class="flex justify-center mb-6 text-lg font-semibold">
+        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+            <a href="{{ route('play', 'easy') }}" class="text-green-300 hover:underline">Easy</a>
+            <a href="{{ route('play', 'medium') }}" class="text-yellow-300 hover:underline">Medium</a>
+            <a href="{{ route('play', 'hard') }}" class="text-orange-300 hover:underline">Hard</a>
+            <a href="{{ route('play', 'hardcore') }}" class="text-red-400 hover:underline">Hardcore</a>
+        </div>
     </header>
 
     <div id="display-text" class="text-lg bg-[#2d2d44] p-4 rounded-xl shadow mb-6 min-h-[120px]">
@@ -227,5 +206,4 @@
             document.getElementById('errors').textContent = 'Errors: ' + errorCount;
         }
     </script>
-</body>
-</html>
+</x-app-layout>

@@ -13,9 +13,24 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        <style>
+            #display-text span {
+                white-space: pre-wrap;
+            }
+
+            .highlight {
+                background-color: green;
+                animation: blink 1s infinite;
+            }
+
+            @keyframes blink {
+                0%, 100% { background-color: green; }
+                50% { background-color: transparent; }
+            }
+        </style>
     </head>
-    <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100">
+    <body class="bg-[#1e1e2f] text-[#f8f8f2] font-mono p-8 leading-relaxed">
+        <div class="min-h-screen">
             @include('layouts.navigation')
 
             <!-- Page Heading -->

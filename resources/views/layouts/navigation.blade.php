@@ -11,7 +11,10 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
                     <x-nav-link :href="route('play', 'easy')" :active="request()->routeIs('play/easy')" class="text-white hover:text-green-300">
-                        {{ __('Typing Game') }}
+                        {{ __('Typing game') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('leaderboard')" :active="request()->routeIs('leaderboard')" class="text-white hover:text-green-300">
+                        {{ __('Typing Leaderboard') }}
                     </x-nav-link>
                 </div>
             </div>

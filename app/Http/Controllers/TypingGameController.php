@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\TextSample;
 use App\Models\Leaderboard;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 class TypingGameController extends Controller
 {
@@ -53,8 +54,22 @@ class TypingGameController extends Controller
     }
     
 
-    public function leaderboard() {
-        $scores = Leaderboard::orderBy('completion_time')->get()->groupBy('difficulty');
+    public function leaderboard()
+    {
+        $scores = Leaderboard::with('user')
+            ->get()
+            ->groupBy('difficulty')
+            ->map(function ($group) {
+                return $group->map(function ($entry) {
+                    $accuracyDecimal = $entry->accuracy / 100;
+                    $timeInSeconds = $entry->completion_time / 1000;
+                    $entry->score = round(($entry->WPM * $accuracyDecimal) / ($timeInSeconds ?: 1), 2); // avoid divide by zero
+                    return $entry;
+                })->sortByDesc('score')->values();
+            });
+    
         return view('leaderboard', compact('scores'));
     }
+    
+    
 }

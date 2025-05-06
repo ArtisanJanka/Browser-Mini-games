@@ -17,6 +17,7 @@
             #display-text span {
                 white-space: pre-wrap;
             }
+            
 
             .highlight {
                 background-color: green;

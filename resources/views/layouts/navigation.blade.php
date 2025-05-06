@@ -13,6 +13,9 @@
                     <x-nav-link :href="route('play', 'easy')" :active="request()->routeIs('play/easy')" class="text-white hover:text-green-300">
                         {{ __('Typing game') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('flappybird')" :active="request()->routeIs('flappybird')" class="text-white hover:text-green-300">
+                        {{ __('Flappy Bird') }}
+                    </x-nav-link>
                     <x-nav-link :href="route('leaderboard')" :active="request()->routeIs('leaderboard')" class="text-white hover:text-green-300">
                         {{ __('Typing Leaderboard') }}
                     </x-nav-link>

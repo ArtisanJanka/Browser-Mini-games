@@ -22,7 +22,9 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/play/{difficulty}', [TypingGameController::class, 'play'])->name('play');
     Route::post('/submit', [TypingGameController::class, 'submit'])->name('submit');
-    Route::get('/leaderboard', [TypingGameController::class, 'leaderboard'])->name('leaderboard');
+    Route::get('/leaderboard', [TypingGameController::class, 'leaderboard'])->name('typing.leaderboard');
+    Route::post('/store', [FlappyController::class, 'store'])->name('store.score');
+    Route::get('/flappy-leaderboard', [FlappyController::class, 'leaderboard'])->name('flappy.leaderboard');
 });
 
 require __DIR__.'/auth.php';

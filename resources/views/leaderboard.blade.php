@@ -38,9 +38,5 @@
         {{ $scoresPaginated->links() }}  {{-- Pagination links for the entire leaderboard --}}
     </div>
 @endforeach
-
-
-
-
     </div>
 </x-app-layout>

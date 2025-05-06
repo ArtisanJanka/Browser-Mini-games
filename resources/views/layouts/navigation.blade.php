@@ -16,8 +16,11 @@
                     <x-nav-link :href="route('flappybird')" :active="request()->routeIs('flappybird')" class="text-white hover:text-green-300">
                         {{ __('Flappy Bird') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('leaderboard')" :active="request()->routeIs('leaderboard')" class="text-white hover:text-green-300">
+                    <x-nav-link :href="route('typing.leaderboard')" :active="request()->routeIs('typing.leaderboard')" class="text-white hover:text-green-300">
                         {{ __('Typing Leaderboard') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('flappy.leaderboard')" :active="request()->routeIs('flappy.leaderboard')" class="text-white hover:text-green-300">
+                        {{ __('Flappy Leaderboard') }}
                     </x-nav-link>
                 </div>
             </div>

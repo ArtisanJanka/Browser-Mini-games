@@ -17,14 +17,6 @@
         <!-- Start Screen -->
         <div id="start-screen" class="bg-[#2d2d44] p-6 rounded-xl shadow-md">
             <h2 class="text-xl font-bold mb-4 text-yellow-300">Choose Your Bird</h2>
-            <div class="mb-6 text-left bg-[#1e1e2f] p-4 rounded-lg">
-                <h3 class="text-lg font-semibold mb-2 text-green-300">How to Play:</h3>
-                <ul class="space-y-1 text-sm text-white">
-                    <li><span class="text-yellow-300">• Press Space or Tap</span> to fly</li>
-                    <li><span class="text-yellow-300">• Avoid pipes</span> to stay alive</li>
-                    <li><span class="text-yellow-300">• Score points</span> by passing through pipes</li>
-                </ul>
-            </div>
             <div id="bird-select" class="flex justify-center gap-4 mb-6">
                 @foreach ([1 => 'Classic', 2 => 'Golden', 3 => 'Blue'] as $num => $label)
                     <div class="text-white">
@@ -52,7 +44,7 @@
             <h2 class="text-xl font-bold text-red-400">Game Over!</h2>
             <p id="final-score" class="mt-4 text-lg font-bold text-yellow-300">Score: 0</p>
             <p id="final-high-score" class="text-cyan-300">High Score: 0</p>
-            <form id="score-form" method="POST" action="/submit-score">
+            <form id="score-form" method="POST" action="{{ route('store.score') }}">>
                 @csrf
                 <input type="hidden" name="score" id="score-input">
                 <button type="submit" id="save-score-btn"

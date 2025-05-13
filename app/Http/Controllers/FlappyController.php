@@ -27,7 +27,7 @@ class FlappyController extends Controller
             'score' => $request->score,
         ]);
 
-        return redirect('/flappy_leaderboard');
+        return redirect('/flappy-leaderboard');
     }
     public function leaderboard()
     {
